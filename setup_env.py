@@ -190,18 +190,10 @@ def gen_code():
 
 def compile():
     # Check if cmake is installed
-    cmake_exists = subprocess.run(["cmake", "--version"], capture_output=True)
-    if cmake_exists.returncode != 0:
-        logging.error("Cmake is not available. Please install CMake and try again.")
-        sys.exit(1)
-    _, arch = system_info()
-    if arch not in COMPILER_EXTRA_ARGS.keys():
-        logging.error(f"Arch {arch} is not supported yet")
-        exit(0)
-    logging.info("Compiling the code using CMake.")
-    run_command(["cmake", "-B", "build", *COMPILER_EXTRA_ARGS[arch], *OS_EXTRA_ARGS.get(platform.system(), [])], log_step="generate_build_files")
-    # run_command(["cmake", "--build", "build", "--target", "llama-cli", "--config", "Release"])
-    run_command(["cmake", "--build", "build", "--config", "Release"], log_step="compile")
+    subprocess.run(["cmake", "CMakeLists.txt"], capture_output=True)
+    subprocess.run(["make"], capture_output=True)
+    subprocess.run(["mkdir", "-p", "build"], capture_output=True)
+    subprocess.run(["cp", "-r", "bin", "build"], capture_output=True)
 
 def main():
     setup_gguf()

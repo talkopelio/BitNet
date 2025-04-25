@@ -16,7 +16,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN git clone --recursive https://github.com/microsoft/BitNet.git
+RUN git clone --recursive https://github.com/talkopelio/BitNet.git
 WORKDIR /BitNet
 
 
@@ -29,7 +29,7 @@ RUN pip3 install -r requirements.txt
 
 # Build the project
 RUN huggingface-cli download microsoft/BitNet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T
-# RUN cmake CMakeLists.txt; make; mkdir -p build; cp -r bin build/
+RUN python3 setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s
 
 
 
